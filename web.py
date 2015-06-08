@@ -7,7 +7,21 @@ app = Flask(__name__)
 
 @app.route("/read")
 def read():
-    return DB.open_file()
+    notes = DB.open_file()
+
+    html = '<a href="/write"> добавить заметку </a>'
+    html += '<ul>'
+
+    for n, iter in enumerate(notes):
+        if len(iter) > 0:
+            html += '<li>'+iter+ '<a href="/delete/'+ str(n) + '"> удалить </a>'+ '</li>'
+
+    return html + '</ul>'
+
+@app.route("/delete/<n>")
+def _delete_(n):
+    DB.remove_element(int(n))
+    return 'ok'
 
 
 @app.route("/write")
