@@ -3,7 +3,9 @@
 import DB
 
 from flask import Flask, request
+
 app = Flask(__name__)
+
 
 @app.route("/read")
 def read():
@@ -11,12 +13,12 @@ def read():
 
     html = '<a href="/write"> добавить заметку </a>'
     html += '<ul>'
-
     for n, iter in enumerate(notes):
         if len(iter) > 0:
-            html += '<li>'+iter+ '<a href="/delete/'+ str(n) + '"> удалить </a>'+ '</li>'
+            html += '<li> {0} <a href="/delete/ {1} "> удалить </a></li>'.format(iter, n)
 
     return html + '</ul>'
+
 
 @app.route("/delete/<n>")
 def _delete_(n):
@@ -35,6 +37,7 @@ def write():
           '''
 
     return html
+
 
 @app.route("/write_post", methods=['post'])
 def write_post():
