@@ -15,7 +15,7 @@ def read():
     html += '<ul>'
     for n, iter in enumerate(notes):
         if len(iter) > 0:
-            html += '<li> {0} <a href="/delete/ {1} "> удалить </a></li>'.format(iter, n)
+            html += '<li> {it} <a href="/delete/ {id} "> удалить </a></li>'.format(it = iter,id = n)
 
     return html + '</ul>'
 
