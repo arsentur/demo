@@ -1,30 +1,33 @@
-DBfile = 'text'
+DB_FILE = 'text'
+
 
 def open_file():
-    with open(DBfile) as data:
+    with open(DB_FILE) as data:
         return data.read().splitlines()
 
+
 def write_file(value):
-    with open(DBfile, 'a') as data:
+    with open(DB_FILE, 'a') as data:
         data.write(value + '\n')
 
+
+def save_db(db):
+    with open(DB_FILE, 'w') as data:
+        for i in db:
+            data.write(i + '\n')
+
+
 def remove_element(n):
-    DB = open_file()
-    del DB[n]
-    with open(DBfile, 'w') as data:
-        for n, iter in enumerate(DB):
-            data.write(iter + '\n')
-
-def edit(new_val,n):
-    DB = open_file()
-    DB.insert(n,new_val)
-    with open(DBfile, 'w') as data:
-        for n, iter in enumerate(DB):
-            data.write(iter + '\n')
+    db = open_file()
+    del db[n]
+    save_db(db)
 
 
+def edit(new_val, n):
+    db = open_file()
+    db.insert(n, new_val)
+    save_db(db)
 
 
 if __name__ == '__main__':
-    # write_file('hello')
     print(open_file())
