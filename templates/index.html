@@ -1,0 +1,7 @@
+<a href="/write">Add note</a>
+
+<ul>
+{% for n, note in notes %}
+<li>{{ note }} <a href="/operation/delete/{{ n }}">Delete</a></li>
+{% endfor %}
+</ul>

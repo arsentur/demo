@@ -25,7 +25,7 @@ def remove_element(n):
 
 def edit(new_val, n):
     db = open_file()
-    db.insert(n, new_val)
+    db[n] = new_val
     save_db(db)
 
 

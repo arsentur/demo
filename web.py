@@ -2,36 +2,24 @@
 
 import DB
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
 
-@app.route('/read')
+@app.route('/')
 def read():
-    notes = DB.open_file()
+    my_notes = []
+    for n, note in enumerate(DB.open_file()):
+        if len(note):
+            my_notes.append((n, note))
 
-    html = '<a href="/write"> добавить заметку </a>'
-    html += '<ul>'
-    for n, note in enumerate(notes):
-        if len(note) > 0:
-            html += '<li>{note}<a href="/delete/{n}">удалить</a></li>'.format(note=note, n=n)
-    return html + '</ul>'
-
-
-@app.route('/delete/<n>')
-def delete(n):
-    DB.remove_element(int(n))
-
-    return 'ok'
+    return render_template('index.html', notes=my_notes)
 
 
 @app.route('/write')
 def write():
-    return '''<form action="/write_post" method="post">
-              <textarea name="note"></textarea>
-              <br><input type="submit" value="Отправить">
-              </form>'''
+    return render_template('write.html')
 
 
 @app.route('/write_get')
@@ -44,17 +32,12 @@ def write_get():
 
 @app.route('/change')
 def change():
-    notes = DB.open_file()
-    html = '<ul>'
+    notes = []
+    for n, note in enumerate(DB.open_file()):
+        if len(note):
+            notes.append((n, note))
 
-    for n, note in enumerate(notes):
-        if len(note) > 0:
-            html += '''<li>{note}<form action="/edit_post/{n}" method="post">
-                       <textarea name="note">{note}</textarea>
-                       <br><input type="submit" value="Изменить">
-                       </form></li>'''.format(note=note, n=n)
-
-    return html + '</ul>'
+    return render_template('change.html', notes=notes)
 
 
 @app.route('/write_post', methods=['POST'])
@@ -65,13 +48,16 @@ def write_post():
     return val
 
 
-@app.route('/edit_post/<n>', methods=['POST'])
-def edit(n):
-    val = request.form['note']
-    DB.edit(val, int(n))
+@app.route('/operation/<select>/<int:n>', methods=['GET', 'POST'])
+def edit(select, n):
+    if select == 'edit':
+        val = request.form['note']
+        DB.edit(val, n)
+    elif select == 'delete':
+        DB.remove_element(n)
 
     return 'ok'
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

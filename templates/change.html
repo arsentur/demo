@@ -1,0 +1,12 @@
+<a href="/write">Add note</a>
+
+<ul>
+    {% for n, note in notes %}
+    <li>{{ note }}
+        <form action="/operation/edit/{{ n }}" method="post">
+            <textarea name="note">{{ note }}</textarea>
+            <br><input type="submit" value="Edit">
+        </form>
+    </li>
+    {% endfor %}
+</ul>
