@@ -15,6 +15,16 @@ def remove_element(n):
         for n, iter in enumerate(DB):
             data.write(iter + '\n')
 
+def edit(new_val,n):
+    DB = open_file()
+    DB.insert(n,new_val)
+    with open(DBfile, 'w') as data:
+        for n, iter in enumerate(DB):
+            data.write(iter + '\n')
+
+
+
+
 if __name__ == '__main__':
     # write_file('hello')
     print(open_file())
