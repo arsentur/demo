@@ -1,7 +1,31 @@
-<a href="/write">Add note</a>
+{% include 'head.html' %}
 
-<ul>
-{% for n, note in notes %}
-<li>{{ note }} <a href="/operation/delete/{{ n }}">Delete</a></li>
-{% endfor %}
-</ul>
+{% include 'navigation.html' %}
+
+<div class="container main">
+    <a href="/write">
+        <button type="button" class="btn btn-success">Add note</button>
+    </a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Note</th>
+            <th>Operation</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for n, note in notes %}
+        <tr>
+            <td>{{ note }}</td>
+            <td>
+                <a href="/operation/edit/{{ n }}">Edit</a> /
+                <a href="/operation/delete/{{ n }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% include 'foot.html' %}
