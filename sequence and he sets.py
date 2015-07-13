@@ -23,3 +23,14 @@ print('Символы с 1 по 3:', name[1:3])
 print('Символы с 2 до конца:', name[2:])
 print('Символы с 1 до -1:', name[1:-1])
 print('Символы от начала до конца:', name[:])
+
+
+bri = set(['Бразилия', 'Россия', 'Индия'])
+print('Индия' in bri)
+
+bric = bri.copy()
+bric.add('Китай')
+print(bric.issuperset(bri))
+
+bri.remove('Россия')
+print(bri & bric) # OR bri.intersection(bric)
