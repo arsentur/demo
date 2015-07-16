@@ -1,11 +1,11 @@
 # coding: utf8
 
-'''
+"""
 1) важно делать проверку на существование папки
 2) указывать полный путь не часто приходится, поэтому лучше получить текущую
 папку
 3) понятно как сделал, сейчас покажу как лучше сделать
-'''
+"""
 
 import csv
 import os
@@ -23,13 +23,13 @@ def decompression(whence):
 def read_csv(file):
     with open(file) as csv_file:
         reader = csv.DictReader(csv_file)
-        data = [row['date;course'].split(';') for row in reader]
+        raw_data = [row['date;course'].split(';') for row in reader]
 
-    return {el[0]: float(el[1]) for el in data}
+    return {el[0]: float(el[1]) for el in raw_data}
 
 
-def search_min_and_max_course(courses):
-    sort_courses = sorted(courses.items(), key=lambda x: x[1])
+def search_min_and_max_course(courses_list):
+    sort_courses = sorted(courses_list.items(), key=lambda x: x[1])
 
     max_course = sort_courses[-1]
     min_course = sort_courses[0]
@@ -62,8 +62,8 @@ if __name__ == '__main__':
 
     courses = {}
     for file_name in os.listdir(PATH_ZIP):
-        course_name = file_name.replace('.csv', '').upper()
-        courses[course_name] = read_csv(PATH_ZIP + '\\' + file_name)
+        name = file_name.replace('.csv', '').upper()
+        courses[name] = read_csv(PATH_ZIP + '\\' + file_name)
 
     for course, data in courses.items():
         show_information(course, data)
