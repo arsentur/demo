@@ -9,7 +9,8 @@
 
 import csv
 import os
-from zipfile import *
+from statistics import median
+from zipfile import ZipFile
 
 PATH_TO_RATES = 'D:\Downloads\historical_exchange_rates.zip'
 PATH_ZIP = os.getcwd() + '\extracted'
@@ -24,34 +25,34 @@ def read_csv(file):
         reader = csv.DictReader(csv_file)
         data = [row['date;course'].split(';') for row in reader]
 
-    return data
+    return {el[0]: float(el[1]) for el in data}
 
 
-def operation(data):
-    curse, all_base = [], []
+def search_min_and_max_course(courses):
+    sort_courses = sorted(courses.items(), key=lambda x: x[1])
 
-    # exit(data[0])
+    max_course = sort_courses[-1]
+    min_course = sort_courses[0]
 
-    for elem in data:
-        for k in elem[1::2]:
-            curse.append(float(k))
+    return {'date': max_course[0], 'value': max_course[1]}, {'date': min_course[0], 'value': min_course[1]}
 
-        for n in elem:
-            all_base.append(n)
 
-    max_ = str(max(curse))
-    min_ = str(min(curse))  # названия плохие
+def show_information(course_name, course_data):
+    median_course = median(course_data.values())
+    max_course, min_course = search_min_and_max_course(course_data)
 
-    for names in os.listdir(PATH_ZIP):
-        print('В валюте: {}'.format(names[:-4]).upper())
+    print('В валюте: {}'.format(course_name))
 
-        print('Самый высокий показатель:', all_base[all_base.index(max_)],
-              'Был зафиксирован:', all_base[all_base.index(max_)-1])
+    print('Самый высокий показатель:', max_course['value'],
+          'Был зафиксирован:', max_course['date'])
 
-        print('Самый низкий показатель:', all_base[all_base.index(min_)],
-              'Был зафиксирован:', all_base[all_base.index(min_)-1])
+    print('Самый низкий показатель:', min_course['value'],
+          'Был зафиксирован:', min_course['date'])
 
-        print()
+    print('Медиана:', median_course)
+
+    print()
+
 
 if __name__ == '__main__':
     if not os.path.exists(PATH_ZIP):
@@ -59,7 +60,10 @@ if __name__ == '__main__':
 
     decompression(PATH_TO_RATES)
 
+    courses = {}
     for file_name in os.listdir(PATH_ZIP):
-        path = PATH_ZIP + '\\' + file_name
+        course_name = file_name.replace('.csv', '').upper()
+        courses[course_name] = read_csv(PATH_ZIP + '\\' + file_name)
 
-        operation(read_csv(path))
+    for course, data in courses.items():
+        show_information(course, data)
