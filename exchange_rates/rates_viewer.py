@@ -1,11 +1,5 @@
 # coding: utf8
 
-"""
-1) важно делать проверку на существование папки
-2) указывать полный путь не часто приходится, поэтому лучше получить текущую
-папку
-3) понятно как сделал, сейчас покажу как лучше сделать
-"""
 
 import csv
 import os
@@ -42,16 +36,9 @@ def show_information(course_name, course_data):
     max_course, min_course = search_min_and_max_course(course_data)
 
     print('В валюте: {}'.format(course_name))
-
-    print('Самый высокий показатель:', max_course['value'],
-          'Был зафиксирован:', max_course['date'])
-
-    print('Самый низкий показатель:', min_course['value'],
-          'Был зафиксирован:', min_course['date'])
-
+    print('Самый высокий показатель:', max_course['value'], 'Был зафиксирован:', max_course['date'])
+    print('Самый низкий показатель:', min_course['value'], 'Был зафиксирован:', min_course['date'])
     print('Медиана:', median_course)
-
-    print()
 
 
 if __name__ == '__main__':
